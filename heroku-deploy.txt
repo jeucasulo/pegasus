@@ -1,0 +1,99 @@
+https://medium.com/@becosta/https-medium-com-becosta-fazendo-deploy-de-um-app-react-para-o-heroku-45ff30003c4a
+
+https://github.com/betinacosta/rollinitiative
+
+----------------------------------------------------
+
+Fazendo o deploy de uma aplicação React Para o Heroku.
+Betina Costa
+Betina Costa
+Following
+Apr 11, 2019 · 3 min read
+
+
+
+
+Logo do react ao lado de “+Express” e “+Heroku” com o logo de casa um
+Ao longo da minha vida de programadora, fazer o deploy de aplicações para o Heroku é algo que constantemente m̶e̶ ̶f̶a̶z̶ ̶p̶a̶s̶s̶a̶r̶ ̶r̶a̶i̶v̶a me gera algumas dificuldades. Minha mais recente aventura, foi fazer o deploy de um simples projeto REACT e para isso, eu segui um tutorial muito bom do Jeremy Gottfried e achei que seria bom criar um material parecido em português e fazer algumas correções de problemas que encontrei no cominho. Vamos lá?
+
+Personagem de IT Crowd digitando muito rápido
+1. Pré-Requisitos
+NodeJS e npm;
+Yarn;
+Heroku CLI;
+Git;
+2. Criar um App React
+Antes de mais nada, precisamos criar um app React, é possível fazer isso manualmente, porém o Facebook criou o módulo de criação create-react-app para gerar uma versão padrão de um aplicativo React. Vamos adicionar esse módulo e usá-lo para criar nossa aplicação.
+npm install -g create-react-app
+npx create-react-app batata-deploy
+cd batata-deploy
+OBS.: Lembre de substituir batata-deploy pelo nome da sua aplicação :)
+Você pode abrir o projeto em um editor de texto da sua preferência, eu particularmente gosto muito do VScode.
+3. Criar um servidor Express JS
+Aqui vamos criar um servidor Node para minificar JavaScript. Isso irá possibilitar que a nossa aplicação funcione após ser deployada.
+Na raiz do nosso repositório, vamos criar um arquivo chamado server.js
+touch server.js
+Abra o arquivo e cole o código abaixo:
+
+Para que nosso servidor funcione, precisamos adicionar express, express-favicon, e path as nossas dependências:
+yarn add express express-favicon path
+Para finalizar, temos que dizer para o package.json rodar nossa aplicação através desse servidor. Noexpress vamos substituir o start por:
+start: "node server.js"
+4. Criar um Build de Produção
+Para criar um build de produção, precisamos rodar o seguinte comando que criará uma pasta de build:
+yarn build
+Para finalizar, temos que adicionar as seguintes linhas ao nosso .gitignore…
+
+… E remover a seguinte linha do mesmo:
+/build
+Fazemos isso para que somente os JS e CSS minificados sejam publicados.
+5. Adicionar NodeJS ao package.json
+Ao tentar fazer o deploy para o Heroku após as 4 partes anteriores, eu recebi um erro referente a não identificação de node no projeto. Após olhar melhor o erro e ler a documentação do Heroku, descobri que para que ele possa identificar corretamente o node, precisamos colocar isso explicitamente no package.json:
+{
+   "name": "batata-deploy",
+   "version": "0.1.0",
+   "engines": {
+      "node": "10.15.3"
+   }
+[...]
+OBS.: O numero da versão do node deve ser o mesmo que o que você tem instalado na sua máquina. Para descobrir, basta executar node -v no terminal :)
+6. Criar Procfile
+Aplicativos Heroku incluem um Procfile que especifica os comandos que serão executados pelo aplicativo na inicialização. Na maioria das vezes, aplicações node conseguem ser identificadas pelo Heroku sem o Procfile, mas para evitar p̶̶̶a̶̶̶s̶̶̶s̶̶̶a̶̶̶r̶̶̶ ̶̶̶r̶̶̶a̶̶̶i̶̶̶v̶̶̶a̶̶̶ perder tempo, vamos criar o arquivo…
+touch Procfile
+… E adicionar o seguinte conteúdo:
+web: node server.js
+7. Fazer Deploy para o Heroku
+Para esse passo é importante ter uma conta criada no Heroku, caso você não tenha, pode criar uma nesse link. Agora, necessitamos fazer login com suas credenciais pelo terminal:
+heroku login
+Agora que já estamos logados, podemos criar uma aplicação no Heroku através do comando:
+heroku create batata-deploy
+Antes de fazer o deploy da nossa aplicação, é necessário excluir o arquivo yarn.lock da raiz do nosso projeto para o Heroku não se perder.
+OBS.: Não tenho certeza de porque isso é necessário, mas foi algo que me causou muita dor de cabeça. De inicio, achei que isso ocorria por ter o yarn e o npm no projeto, porém ao tentar apenas com um deles tive o mesmo problema e decidi seguir a recomendação do ̶s̶t̶a̶c̶k̶o̶v̶e̶r̶f̶l̶o̶w̶ profissionais super qualificadas e de confiança.
+Feito isso, podemos prosseguir para o deploy:
+git init # inicializar repositório
+git add . # adicionar as mudanças
+git commit -m "It's Aliveeeee" # comittar mudanças
+heroku git:remote -a batata-deploy # adicionar remote
+git push heroku master # fazer o push da aplicação
+OBS.: Caso você já tenha inicializado o seu repositório, basta executar os últimos dois passos.
+Parabéns! S̶e̶ ̶t̶u̶d̶o̶ ̶d̶e̶r̶ ̶c̶e̶r̶t̶o̶ Agora você tem uma aplicação deployada no Heroku!
+
+Criança comemorando jogando um prato de vidro no chão
+Para acessar sua aplicação, basta executar essa linha no terminal:
+heroku open
+Pronto! Vocês podem ver o resultado final (e outras coisas mais) no meu github.
+287
+
+
+Your journey starts here.
+FORGE
+
+Prepare for the Ultimate Gaslighting*
+
+Belgian-Dutch Study: Why in times of COVID-19 you should not walk/run/bike close behind each other.
+
+Coronavirus: Why You Must Act Now
+CORONAVIRUS
+
+Misinformation goes Viral
+Thanks to Felipe de Morais. 
